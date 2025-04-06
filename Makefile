@@ -12,6 +12,7 @@ pre:
 
 helm:
 	@helmfile apply
+	
 create: 
 	@kind create cluster --config config.yaml
 
@@ -19,3 +20,13 @@ up: create pre helm
 
 destroy:
 	@kind delete clusters kind
+
+passwd:
+	@echo "Jenkins Admin Password:"
+	@kubectl get secret -n jenkins jenkins -ojson | jq -r '.data."jenkins-admin-password"' | base64 -d
+
+	@echo "ArgoCD Password:"
+	@kubectl get secret -n argocd argocd-initial-admin-secret -ojson | jq -r '.data.password' | base64 -d
+
+	@echo "Sonarqube Admin Password:"
+	@echo Senha@123456
